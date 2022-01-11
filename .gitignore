@@ -1,3 +1,4 @@
 .idea/
 .git/
-pythagorean-triplet/
+.gradle/
+.build/
