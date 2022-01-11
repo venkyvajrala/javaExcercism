@@ -28,17 +28,6 @@ public class PythagoreanTriplet
     int tripletValue1;
     int tripletValue2;
     int tripletValue3;
-    int tripletSum;
-    //public static List<PythagoreanTriplet> Triplets;
-    public PythagoreanTriplet()
-    {
-
-
-    }
-    public PythagoreanTriplet(int sum)
-    {
-        this.tripletSum=sum;
-    }
 
     public PythagoreanTriplet(int tripletValue1, int tripletValue2, int tripletValue3) {
         this.tripletValue1 = tripletValue1;
@@ -46,50 +35,61 @@ public class PythagoreanTriplet
         this.tripletValue3 = tripletValue3;
     }
 
-    public static PythagoreanTriplet makeTripletsList() {
-
-
-        return new PythagoreanTriplet();
+    public static TripletBuilder makeTripletsList() {
+        return new TripletBuilder();
     }
 
-    public PythagoreanTriplet withFactorsLessThanOrEqualTo(int i) {
+    public  static  class TripletBuilder
+    {
+        int sum=-1;int maxValue=0;
 
-        return new PythagoreanTriplet(i);
-    }
+        public TripletBuilder withFactorsLessThanOrEqualTo(int i) {
 
-    public PythagoreanTriplet thatSumTo(int sum) {
-        return new PythagoreanTriplet(sum);
-    }
-
-    public List<PythagoreanTriplet> build() {
-
-        List<PythagoreanTriplet> triplets = new ArrayList<>();
-        for(int number = 2; number< (this.tripletSum/4); number+=2)
-        {
-            int n=(int)Math.pow(number,2)/2;
-            for(int divisor=1;divisor<Math.sqrt(n)+1;divisor++ )
-            {
-                if(n%divisor==0)
-                {
-
-                   int  dividend= n/divisor;
-                    //System.out.println(divisor+":"+dividend+":"+number);
-                   int tripletValue1=number+dividend;
-                   int tripletValue2=number+divisor;
-                   int tripletValue3=number+dividend+divisor;
-                    //System.out.println(tripletValue1+","+tripletValue2+","+tripletValue3);
-                   if(tripletValue1+tripletValue2+tripletValue3==this.tripletSum)
-                   {
-                       System.out.println(tripletValue1+","+tripletValue2+","+tripletValue3);
-                       triplets.add(new PythagoreanTriplet(tripletValue1,tripletValue2,tripletValue3));
-                   }
-
-                }
-            }
+            maxValue=i;
+            return this;
         }
 
-        return triplets;
+        public TripletBuilder thatSumTo(int sum) {
+            this.sum=sum;
+            return this;
+        }
+        public List<PythagoreanTriplet> build() {
+
+            List<PythagoreanTriplet> triplets = new ArrayList<>();
+            for(int number = 2; number< (this.sum/4); number+=2)
+            {
+                int n=(int)Math.pow(number,2)/2;
+                for(int divisor=1;divisor<Math.sqrt(n)+1;divisor++ )
+                {
+                    if(n%divisor==0)
+                    {
+
+                        int  dividend= n/divisor;
+                        //System.out.println(divisor+":"+dividend+":"+number);
+                        int tripletValue1=number+dividend;
+                        int tripletValue2=number+divisor;
+                        int tripletValue3=number+dividend+divisor;
+                        int max=Math.max(Math.max(tripletValue1,tripletValue2),tripletValue3);
+                        int min=Math.min(Math.min(tripletValue1,tripletValue2),tripletValue3);
+                        int secondMax=tripletValue1+tripletValue2+tripletValue3-max-min;
+                        //System.out.println(tripletValue1+","+tripletValue2+","+tripletValue3);
+                       if(tripletValue1+tripletValue2+tripletValue3==this.sum)
+                        {
+                            System.out.println(min+","+secondMax+","+max);
+                            triplets.add(new PythagoreanTriplet(min,secondMax,max));
+                        }
+
+                    }
+                }
+            }
+
+            return triplets;
+        }
     }
+
+
+
+
 
 
 
