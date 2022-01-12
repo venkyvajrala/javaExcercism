@@ -3,8 +3,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
-public class PythagoreanTriplet
-{
+public class PythagoreanTriplet {
     /* Conditions : x^2+y^2=z^2 , x<y<z  , x+y+z=sum
    Dickson's Method:
           to generate every triplet
@@ -44,6 +43,7 @@ public class PythagoreanTriplet
                 ", sideC=" + sideC +
                 '}';
     }
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof PythagoreanTriplet) {
@@ -51,62 +51,58 @@ public class PythagoreanTriplet
         }
         return false;
     }
+
     @Override
     public int hashCode() {
         return this.sideA;
     }
 
-    public static void sort(ArrayList<PythagoreanTriplet> triplets)
-    {
+    public static void sort(ArrayList<PythagoreanTriplet> triplets) {
 
         triplets.sort(Comparator.comparingInt(o -> o.sideA));
     }
+
     public static TripletBuilder makeTripletsList() {
         return new TripletBuilder();
     }
 
-    public  static  class TripletBuilder
-    {
-        int sum=-1;int maxValue=0;
+    public static class TripletBuilder {
+        int sum = -1;
+        int maxValue = 0;
 
         public TripletBuilder withFactorsLessThanOrEqualTo(int i) {
 
-            maxValue=i;
+            maxValue = i;
             return this;
         }
 
         public TripletBuilder thatSumTo(int sum) {
-            this.sum=sum;
+            this.sum = sum;
             return this;
         }
-
 
 
         public List<PythagoreanTriplet> build() {
 
             List<PythagoreanTriplet> triplets = new ArrayList<>();
             int maxIteration = this.sum / 4;
-            for(int number = 2; number< maxIteration; number+=2)
-            {
-                int n=(int)Math.pow(number,2)/2;
+            for (int number = 2; number < maxIteration; number += 2) {
+                int n = (int) Math.pow(number, 2) / 2;
 
                 double sqrtOfn = Math.sqrt(n) + 1;
-                for(int divisor = 1; divisor< sqrtOfn; divisor++ )
-                {
-                    if(isDivisible(n, divisor))
-                    {
-                        
-                        int  dividend= n/divisor;
-                        int sideA=number+dividend;
-                        int sideB=number+divisor;
-                        int sideC=number+dividend+divisor;
-                        int tripletSum=sideA+sideB+sideC;
-                        int hypotenuse=Math.max(Math.max(sideA,sideB),sideC);
-                        int base=Math.min(Math.min(sideA,sideB),sideC);
-                        int height=tripletSum-hypotenuse-base;
-                       if(tripletSum==this.sum)
-                        {
-                            triplets.add(new PythagoreanTriplet(base,height,hypotenuse));
+                for (int divisor = 1; divisor < sqrtOfn; divisor++) {
+                    if (isDivisible(n, divisor)) {
+
+                        int dividend = n / divisor;
+                        int sideA = number + dividend;
+                        int sideB = number + divisor;
+                        int sideC = number + dividend + divisor;
+                        int tripletSum = sideA + sideB + sideC;
+                        int hypotenuse = Math.max(Math.max(sideA, sideB), sideC);
+                        int base = Math.min(Math.min(sideA, sideB), sideC);
+                        int height = tripletSum - hypotenuse - base;
+                        if (tripletSum == this.sum) {
+                            triplets.add(new PythagoreanTriplet(base, height, hypotenuse));
                         }
 
                     }
@@ -116,7 +112,7 @@ public class PythagoreanTriplet
 
             //Removing duplicate triplets from List
             HashSet<PythagoreanTriplet> hashSet = new HashSet(triplets);
-            triplets= new ArrayList<>(hashSet);
+            triplets = new ArrayList<>(hashSet);
 
             //sorting based on sideA
             sort((ArrayList<PythagoreanTriplet>) triplets);
@@ -128,12 +124,6 @@ public class PythagoreanTriplet
             return n % divisor == 0;
         }
     }
-
-
-
-
-    
-
 
 
 }
