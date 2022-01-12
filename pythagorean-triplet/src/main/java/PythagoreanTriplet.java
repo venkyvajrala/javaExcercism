@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 public class PythagoreanTriplet
@@ -42,9 +44,23 @@ public class PythagoreanTriplet
                 ", sideC=" + sideC +
                 '}';
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof PythagoreanTriplet) {
+            return ((PythagoreanTriplet) obj).sideA == sideA;
+        }
+        return false;
+    }
+    @Override
+    public int hashCode() {
+        return this.sideA;
+    }
 
-   
+    public static void sort(ArrayList<PythagoreanTriplet> triplets)
+    {
 
+        triplets.sort(Comparator.comparingInt(o -> o.sideA));
+    }
     public static TripletBuilder makeTripletsList() {
         return new TripletBuilder();
     }
@@ -97,6 +113,13 @@ public class PythagoreanTriplet
                 }
             }
 
+
+            //Removing duplicate triplets from List
+            HashSet<PythagoreanTriplet> hashSet = new HashSet(triplets);
+            triplets= new ArrayList<>(hashSet);
+
+            //sorting based on sideA
+            sort((ArrayList<PythagoreanTriplet>) triplets);
             return triplets;
         }
 
@@ -105,6 +128,8 @@ public class PythagoreanTriplet
             return n % divisor == 0;
         }
     }
+
+
 
 
     
