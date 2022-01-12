@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,15 +24,26 @@ public class PythagoreanTriplet
                                     So, we loop for r values  2 to sum/4.
   */
 
-    int tripletValue1;
-    int tripletValue2;
-    int tripletValue3;
+    int sideA;
+    int sideB;
+    int sideC;
 
-    public PythagoreanTriplet(int tripletValue1, int tripletValue2, int tripletValue3) {
-        this.tripletValue1 = tripletValue1;
-        this.tripletValue2 = tripletValue2;
-        this.tripletValue3 = tripletValue3;
+    public PythagoreanTriplet(int sideA, int sideB, int sideC) {
+        this.sideA = sideA;
+        this.sideB = sideB;
+        this.sideC = sideC;
     }
+
+    @Override
+    public String toString() {
+        return "PythagoreanTriplet{" +
+                "sideA=" + sideA +
+                ", sideB=" + sideB +
+                ", sideC=" + sideC +
+                '}';
+    }
+
+   
 
     public static TripletBuilder makeTripletsList() {
         return new TripletBuilder();
@@ -53,30 +63,34 @@ public class PythagoreanTriplet
             this.sum=sum;
             return this;
         }
+
+
+
         public List<PythagoreanTriplet> build() {
 
             List<PythagoreanTriplet> triplets = new ArrayList<>();
-            for(int number = 2; number< (this.sum/4); number+=2)
+            int maxIteration = this.sum / 4;
+            for(int number = 2; number< maxIteration; number+=2)
             {
                 int n=(int)Math.pow(number,2)/2;
-                for(int divisor=1;divisor<Math.sqrt(n)+1;divisor++ )
-                {
-                    if(n%divisor==0)
-                    {
 
+                double sqrtOfn = Math.sqrt(n) + 1;
+                for(int divisor = 1; divisor< sqrtOfn; divisor++ )
+                {
+                    if(isDivisible(n, divisor))
+                    {
+                        
                         int  dividend= n/divisor;
-                        //System.out.println(divisor+":"+dividend+":"+number);
-                        int tripletValue1=number+dividend;
-                        int tripletValue2=number+divisor;
-                        int tripletValue3=number+dividend+divisor;
-                        int max=Math.max(Math.max(tripletValue1,tripletValue2),tripletValue3);
-                        int min=Math.min(Math.min(tripletValue1,tripletValue2),tripletValue3);
-                        int secondMax=tripletValue1+tripletValue2+tripletValue3-max-min;
-                        //System.out.println(tripletValue1+","+tripletValue2+","+tripletValue3);
-                       if(tripletValue1+tripletValue2+tripletValue3==this.sum)
+                        int sideA=number+dividend;
+                        int sideB=number+divisor;
+                        int sideC=number+dividend+divisor;
+                        int tripletSum=sideA+sideB+sideC;
+                        int hypotenuse=Math.max(Math.max(sideA,sideB),sideC);
+                        int base=Math.min(Math.min(sideA,sideB),sideC);
+                        int height=tripletSum-hypotenuse-base;
+                       if(tripletSum==this.sum)
                         {
-                            System.out.println(min+","+secondMax+","+max);
-                            triplets.add(new PythagoreanTriplet(min,secondMax,max));
+                            triplets.add(new PythagoreanTriplet(base,height,hypotenuse));
                         }
 
                     }
@@ -85,12 +99,15 @@ public class PythagoreanTriplet
 
             return triplets;
         }
+
+
+        private boolean isDivisible(int n, int divisor) {
+            return n % divisor == 0;
+        }
     }
 
 
-
-
-
+    
 
 
 
